@@ -53,4 +53,48 @@ public:
     }
 };
 
+
+template <class CLS_T>
+class BasicMathOps_wCmp: BasicMathOps<CLS_T> {
+public:
+    inline bool operator >(CLS_T rhs);
+    inline bool operator <(CLS_T rhs);
+    inline bool operator >=(CLS_T rhs) {return !this->operator>(rhs);}
+    inline bool operator <=(CLS_T rhs) {return !this->operator<(rhs);}
+};
+
+
+template <typename NUM_T, class CLS_T>
+class BasicMathOps_wNUM_T: BasicMathOps_wCmp<CLS_T> {
+public:
+    inline bool operator==(const NUM_T &rhs);
+    inline bool operator!=(const NUM_T &rhs) {return !this->operator==(rhs);}
+
+    inline bool operator >(NUM_T rhs);
+    inline bool operator <(NUM_T rhs);
+    inline bool operator >=(NUM_T rhs) {return !this->operator>(rhs);}
+    inline bool operator <=(NUM_T rhs) {return !this->operator<(rhs);}
+
+    inline CLS_T operator+=(NUM_T other);
+    inline CLS_T operator-=(NUM_T other);
+    inline CLS_T operator/=(NUM_T other);
+    inline CLS_T operator*=(NUM_T other);
+    inline const CLS_T operator+(NUM_T other) {
+        CLS_T v = this;
+        return v += other;
+    }
+    inline const CLS_T operator-(NUM_T other) {
+        CLS_T v = this;
+        return v -= other;
+    }
+    inline const CLS_T operator/(NUM_T other) {
+        CLS_T v = this;
+        return v /= other;
+    }
+    inline const CLS_T operator*(NUM_T other) {
+        CLS_T v = this;
+        return v *= other;
+    }
+};
+
 #endif
