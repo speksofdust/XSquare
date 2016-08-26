@@ -28,7 +28,7 @@ protected:
     void _del_item_safe(ITEM_T item) {
         this._del_item_by_idx(this->indexof_safe(item));
     }
-    void _del_item(ITEM_T item) { this._del_item_by_idx(this->indexof(item)); }
+    void _del_item(ITEM_T item) {this._del_item_by_idx(this->indexof(item));}
     void _del_item_by_idx(const unsigned i) {
         if (i == 0 || i <= this->size())
             this->items.erase(this->items.begin()+i);
@@ -58,7 +58,6 @@ public:
     bool operator!=(const CLS_T &rhs) {return !this->operator==(rhs);}
     ITEM_T& operator[](size_t pos) {return this->items[pos];}
     const ITEM_T& operator[](size_t pos) const {return this->items[pos];}
-
 };
 
 #endif
