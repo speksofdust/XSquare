@@ -49,6 +49,7 @@ public:
 class MgrRawID: protected RawID {
 protected:
     unsigned _last = 0;
+    bool _locked = false;
 public:
     friend class RawID;
     MgrRawID() {
@@ -58,10 +59,17 @@ public:
     bool operator==(const MgrRawID &rhs) {return this->rid == rhs.rid;}
     bool operator!=(const MgrRawID &rhs) {return !this->operator==(rhs);}
     RawID new_RawID(void) {
-        RawID r;
-        r = RawID(this->_last);
-        this->_last++;
-        return r;
+        while (1) {
+            if (!this->_locked) {
+                this->_locked = true;
+                RawID r;
+                r = RawID(this->_last);
+                this->_last++;
+                this->_locked = false;
+                return r;
+            }
+        }
+
     }
 };
 
