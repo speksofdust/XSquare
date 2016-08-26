@@ -16,84 +16,58 @@
 
 
 #include <string>
-#include "include/basic_ops.hpp"
+#include "mixin/base_T.hpp"
+#include "mixin/dataprop_T.hpp"
 
 #ifndef PROP__
 #define PROP__
 
 
-class BoolProp: BasicBoolOps<BoolProp>{ // bool property
-protected:
-    bool enabled;
+class BoolProp: T_basecmp_dataprop<bool, BoolProp>{ // bool property
 public:
-    bool get_enabled(void) {return this->enabled; }
-    void set_enabled(bool t) {if (this->enabled != t) this->enabled = t;}
     void toggle(void) { // invert current state
-        if (this->enabled == true) this->enabled = false;
-        else this->enabled = true;
+        this->data = ~this->data;
     }
     bool toggled(void) { // invert current state and return it
         this->toggle();
-        return this->enabled;
+        return this->data;
     }
     /*BoolProp& operator=(const BoolProp &rhs) {
         if (rhs.enabled != this->enabled && *this != &rhs) {
             this->toggle();}
         return *this;
     }*/
-    bool operator==(const BoolProp &rhs) {
-        return this->enabled == rhs.enabled;
-    }
-    bool operator!=(const BoolProp &rhs) {
-        return (!this->operator==(rhs));
-    }
 };
 
 
-class CharArrProp { // char array property
+class CharArrProp: T_basecmp<char*> { // char array property
 protected:
     char* _ca;
 public:
     char* get(void) { return this->_ca; }
     void set(char* t) { if (this->_ca != t) this->_ca = t;}
-    bool operator==(const CharArrProp &rhs) { return this->_ca == rhs._ca; }
-    bool operator!=(const CharArrProp &rhs) {
-        return (!this->operator==(rhs));
-    }
+    bool operator==(CharArrProp &rhs) { return this->_ca == rhs._ca; }
+    bool operator!=(CharArrProp &rhs) {return !this->operator==(rhs);}
+    bool operator==(char* rhs) {return this->_ca == rhs;}
+
     //char& operator[](size_t pos) {return this->_ca[pos];}
     //const char& operator[](size_t pos) const {return this->_ca[pos];}
 };
 
 
-class StrProp {
-protected:
-    std::string _str;
+class StrProp: T_basecmp_dataprop<std::string, StrProp> {
 public:
-    void set(char* t);
-    unsigned size(void) const {return this->_str.size();}
-    bool operator==(const StrProp &rhs) {
+    unsigned size(void) const {return this->data.size();}
+    bool operator==(StrProp &rhs) {
         const unsigned s = this->size();
         if (!rhs.size() == s) return false;
         else
             for (size_t i=0; i<s; i++)
-                if (!this->_str[i] == rhs._str[i]) return false;
+                if (!this->data[i] == rhs.data[i]) return false;
         return true;
     }
-    bool operator!=(const StrProp &rhs) {return !this->operator==(rhs);}
-    char& operator[](size_t pos) {return this->_str[pos];}
-    const char& operator[](size_t pos) const {return this->_str[pos];}
-    // std::string x StrProp comparison
-    /*
-    bool operator==(const &rhs) {
-        const unsigned s = this->size();
-        if (!rhs.size() == s) return false;
-        else
-            for (size_t i=0; i<s; i++)
-                if (!this->_str[i] == rhs[i]) return false;
-        return true;
-    }
-    bool operator!=(const &rhs) {return !this->operator==(rhs);}
-    */
+    char& operator[](size_t pos) {return this->data[pos];}
+    const char& operator[](size_t pos) const {return this->data[pos];}
 };
 
 
