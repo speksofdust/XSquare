@@ -77,19 +77,19 @@ class T_math_w_fullcmp: T_math<T, CLS_T>, T_fullcmp<T> {};
 
 /* ---- operators for dual case (can use T or CLS_T as arg) ----------------- */
 template <class T, class CLS_T>
-class Dual_basecmp: T_basecmp<T>, T_basecmp<CLS_T> {};
+class Dual_basecmp: T_basecmp<T>, T_basecmp<CLS_T> {}; // base cmp only
 
 template <class T, class CLS_T>
-class Dual_cmp: T_cmp<T>, T_cmp<CLS_T> {};
+class Dual_cmp: T_cmp<T>, T_cmp<CLS_T> {};              // cmp only
 
 template <class T, class CLS_T>
-class Dual_fullcmp: T_fullcmp<T>, T_fullcmp<CLS_T> {};
+class Dual_fullcmp: T_fullcmp<T>, T_fullcmp<CLS_T> {}; // fullcmp only
 
 template <class T, class CLS_T>
-class Dual_math: T_math<T, CLS_T>, T_math<CLS_T, CLS_T> {};
+class Dual_math: T_math<T, CLS_T>, T_math<CLS_T, CLS_T> {}; // math only
 
 template <class T, class CLS_T>
-class Dual_math_w_base_cmp: T_math_w_basecmp<T, CLS_T>,
+class Dual_math_w_basecmp: T_math_w_basecmp<T, CLS_T>,
     T_math_w_basecmp<CLS_T, CLS_T> {};
 
 template <class T, class CLS_T>
