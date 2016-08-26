@@ -30,18 +30,17 @@ public:
 };
 
 
-template <class ITEM_T, class CLS_T> // T must inherit from ObWithRID
+template <class ITEM_T, class CLS_T> // ITEM_T must inherit from ObWithRID
 class MgrWithRID: protected Mgr<ITEM_T, CLS_T> {
 protected:
     MgrRawID rid;
-
+    const unsigned ID(void) {return this->rid.ID();}
     void _add_item(ITEM_T &item) {
         item.rid = this->rid.new_RawID();
         this->items.push_back;
     }
-
 public:
-    const unsigned ID(void) {return this->rid.ID();}
+
 };
 
 
@@ -85,12 +84,14 @@ template <class CLS_T>
 class ObWithRID: protected _Ob_BC<CLS_T> {
 protected:
     RawID rid;
-public:
     const unsigned ID(void) {return this->rid.ID();}
+public:
     CLS_T& operator=(const CLS_T &other) { // copy
-        if (this != &other)
-            this->rid++;    // must increment rid
-            return *this;
+        if (this != &other) {// must increment rid
+            CLS_T x = *this;
+            x.rid = this->rid.new_RawID();
+            return x;
+        } else return *this;
     }
     bool operator==(const CLS_T &rhs) {return this->rid == rhs.rid;}
 };

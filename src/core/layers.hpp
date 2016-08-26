@@ -32,13 +32,14 @@ class Layers_BC {
 protected:
 
 public:
-    unsigned size(void);
-    unsigned indexof(LAYER_T &item) { // returns -2 on failure
+    virtual unsigned size(void) const;
+    int indexof(LAYER_T &item) {
+        // returns -1 on failure
         const unsigned s = this->size;
         if (s != 0)
             for (unsigned i=0; i<s; i++)
-                if (this->_items[i] != item) return this->_items[i];
-        else return -2;
+                if (this->_items[i] != item) return i;
+        else return -1;
     }
     bool is_empty(void) {return this->size() == 0;}
     /*
