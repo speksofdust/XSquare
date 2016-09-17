@@ -22,6 +22,7 @@
 template <class T>
 class T_basecmp {
 public:
+    virtual ~T_basecmp();
     virtual inline bool operator==(T &rhs);
     inline bool operator!=(T &rhs) {return !this->operator==(rhs);}
 };
@@ -30,22 +31,27 @@ public:
 template <class T>
 class T_cmp {
 public:
-    virtual inline bool operator >(T rhs);
-    virtual inline bool operator <(T rhs);
-    inline bool operator >=(T rhs) {return !this->operator>(rhs);}
-    inline bool operator <=(T rhs) {return !this->operator<(rhs);}
+    virtual ~T_cmp();
+    virtual inline bool operator>(T rhs);
+    virtual inline bool operator<(T rhs);
+    inline bool operator>=(T rhs) {return !this->operator>(rhs);}
+    inline bool operator<=(T rhs) {return !this->operator<(rhs);}
 };
 
 
 template <class T>
 // <, <=, >=, >, ==, and != operators
-class T_fullcmp: T_cmp<T>, T_basecmp<T> {};
+class T_fullcmp: T_cmp<T>, T_basecmp<T> {
+public:
+    virtual ~T_fullcmp();
+};
 
 
 template <class T, class CLS_T>
 class T_math {
 // math operators for T
 public:
+    virtual ~T_math();
     virtual inline CLS_T operator+=(T other);
     virtual inline CLS_T operator-=(T other);
     virtual inline CLS_T operator/=(T other);
@@ -70,30 +76,65 @@ public:
 
 
 template <class T, class CLS_T>
-class T_math_w_basecmp: T_math<T, CLS_T>, T_basecmp<T> {};
+class T_math_w_basecmp: T_math<T, CLS_T>, T_basecmp<T> {
+public:
+    virtual ~T_math_w_basecmp();
+};
+
 
 template <class T, class CLS_T>
-class T_math_w_fullcmp: T_math<T, CLS_T>, T_fullcmp<T> {};
+class T_math_w_fullcmp: T_math<T, CLS_T>, T_fullcmp<T> {
+public:
+    virtual ~T_math_w_fullcmp();
+};
+
 
 /* ---- operators for dual case (can use T or CLS_T as arg) ----------------- */
 template <class T, class CLS_T>
-class Dual_basecmp: T_basecmp<T>, T_basecmp<CLS_T> {}; // base cmp only
+class Dual_basecmp: T_basecmp<T>, T_basecmp<CLS_T> {
+// base cmp only
+public:
+    virtual ~Dual_basecmp();
+};
+
 
 template <class T, class CLS_T>
-class Dual_cmp: T_cmp<T>, T_cmp<CLS_T> {};              // cmp only
+class Dual_cmp: T_cmp<T>, T_cmp<CLS_T> {
+// cmp only
+public:
+    virtual ~Dual_cmp();
+};
+
 
 template <class T, class CLS_T>
-class Dual_fullcmp: T_fullcmp<T>, T_fullcmp<CLS_T> {}; // fullcmp only
+class Dual_fullcmp: T_fullcmp<T>, T_fullcmp<CLS_T> {
+// fullcmp only
+public:
+    virtual ~Dual_fullcmp();
+};
+
 
 template <class T, class CLS_T>
-class Dual_math: T_math<T, CLS_T>, T_math<CLS_T, CLS_T> {}; // math only
+class Dual_math: T_math<T, CLS_T>, T_math<CLS_T, CLS_T> {
+// math only
+public:
+    virtual ~Dual_math();
+};
+
 
 template <class T, class CLS_T>
 class Dual_math_w_basecmp: T_math_w_basecmp<T, CLS_T>,
-    T_math_w_basecmp<CLS_T, CLS_T> {};
+    T_math_w_basecmp<CLS_T, CLS_T> {
+public:
+    virtual ~Dual_math_w_basecmp();
+};
+
 
 template <class T, class CLS_T>
 class Dual_math_w_fullcmp: T_math_w_fullcmp<T, CLS_T>,
-    T_math_w_fullcmp<CLS_T, CLS_T> {};
+    T_math_w_fullcmp<CLS_T, CLS_T> {
+public:
+    virtual ~Dual_math_w_fullcmp();
+};
 
-#endif
+#endif // BASE_T__

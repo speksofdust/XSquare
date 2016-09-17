@@ -24,6 +24,7 @@ template <typename NUM_T, class CLS_T>
 class T_veclike: CLS_T_clamping<CLS_T>, T_veclikebase<NUM_T, CLS_T> {
 // advanced vector functions
 public:
+    virtual ~T_veclike();
     void jitterfill(NUM_T amt) {
         // same as randfill but takes a single arg
         // fills each axis with a random NUM_T from -amt to amt
@@ -56,14 +57,14 @@ public:
         t->fill(1-factor);
         return (t * other) + (t * this);
     }
-
     CLS_T avg_of(CLS_T &other) { // average of this and other
         CLS_T v;
         v = this->operator+(other);
         v /= 2;
         return v;
     }
-    CLS_T avg_of(CLS_T* &ary, unsigned ary_size) { //average of all items in array
+    CLS_T avg_of(CLS_T* &ary, const unsigned ary_size) {
+        //average of all items in array
         if (ary_size == 1) return this->avg_of_two(ary[0]);
         else if (ary_size >= 2) {
             CLS_T v;
@@ -74,7 +75,6 @@ public:
             return v;
         }
     }
-
 };
 
-#endif
+#endif // VECLIKE_T__

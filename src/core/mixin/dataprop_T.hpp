@@ -24,6 +24,7 @@ class _T_dataprop: T_prop_bc<DATA_T, CLS_T> {
 protected:
     DATA_T data;
 public:
+    virtual ~_T_dataprop();
     DATA_T get(void) {return this->data;}
     const DATA_T get(void) const {return this->data;}
     bool operator==(DATA_T rhs) {return this->data == rhs;}
@@ -33,6 +34,8 @@ public:
 template <class DATA_T, class CLS_T>
 class T_basecmp_dataprop: protected _T_dataprop<DATA_T, CLS_T>,
         Dual_basecmp<DATA_T, CLS_T> {
+public:
+    virtual ~T_basecmp_dataprop();
 };
 
 
@@ -40,6 +43,7 @@ template <class DATA_T, class CLS_T>
 class T_math_dataprop: protected _T_dataprop<DATA_T, CLS_T>,
         Dual_math_w_basecmp<DATA_T, CLS_T> {
 public:
+    virtual ~T_math_dataprop();
     void set(DATA_T value) {if (!this->data == value) this->data == value;}
     inline CLS_T operator+=(DATA_T other) {
         this->data += other;
@@ -82,10 +86,11 @@ template <class DATA_T, class CLS_T>
 class T_fullmath_dataprop: protected T_math_dataprop<DATA_T, CLS_T>,
         Dual_fullcmp<DATA_T, CLS_T> {
 public:
+    virtual ~T_fullmath_dataprop();
     inline bool operator >(DATA_T rhs) {return this->data > rhs;}
     inline bool operator <(DATA_T rhs) {return this->data < rhs;}
     inline bool operator >(CLS_T rhs) {return this->data > rhs.data;}
     inline bool operator <(CLS_T rhs) {return this->data < rhs.data;}
 };
 
-#endif
+#endif // DATAPROP_T__

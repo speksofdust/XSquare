@@ -14,53 +14,49 @@
  *   not, see http://www.gnu.org/licenses/.                                 *
 * ------------------------------------------------------------------------- */
 
-#ifndef PROP_T__
-#define PROP_T__
+#ifndef CLAMP_T__
+#define CLAMP_T__
 
-#include "base_T.hpp"
-
-/*
---All prop types must allow at least == and != comparison for both
-    DATA_T and CLS_T types as args. (CLS_T ==/!= DATA_T) where applicable.
--- Note: prop types do not necessiarly have to inherit from T_prop_bc
-*/
-
-template <class DATA_T, class CLS_T>
-class T_prop_bc {
-public:
-    virtual ~T_prop_bc();
-    virtual DATA_T get(void);
-    virtual const DATA_T get(void) const;
-    virtual void set(DATA_T value);
-
-    virtual bool operator==(DATA_T rhs);
-    bool operator!=(DATA_T rhs) {return !this->operator==(rhs);}
+template <class T, class CLS_T>
+class T_clamping {
+    virtual ~T_clamping();
+    virtual bool in_range(T min, T max);
+    virtual void clamp(T lo, T hi);
+    CLS_T clamped(T lo, T hi) {
+        T v = this;
+        return v->clamp(lo, hi);
+    }
+    virtual void clamp_lo(T lo);
+    CLS_T clamped_lo(T lo) {
+        T v = this;
+        return v->clamp_lo(lo);
+    }
+    virtual void clamp_hi(T hi);
+    CLS_T clamped_hi(T hi) {
+        T v = this;
+        return v->clamp_hi(hi);
+    }
 };
 
-
-template <class DATA_T, class CLS_T>
-class T_prop_basecmp: Dual_basecmp<DATA_T, CLS_T> {
-// with == and !=
-public:
-    virtual ~T_prop_basecmp();
+template <class CLS_T>
+class CLS_T_clamping {
+    virtual ~CLS_T_clamping();
+    virtual bool in_range(CLS_T min, CLS_T max);
+    virtual void clamp(CLS_T lo, CLS_T hi);
+    CLS_T clamped(CLS_T lo, CLS_T hi) {
+        CLS_T v = this;
+        return v->clamp(lo, hi);
+    }
+    virtual void clamp_lo(CLS_T lo);
+    CLS_T clamped_lo(CLS_T lo) {
+        CLS_T v = this;
+        return v->clamp_lo(lo);
+    }
+    virtual void clamp_hi(CLS_T hi);
+    CLS_T clamped_hi(CLS_T hi) {
+        CLS_T v = this;
+        return v->clamp_hi(hi);
+    }
 };
 
-
-template <class DATA_T, class CLS_T>
-class T_mathprop: T_prop_bc<DATA_T, CLS_T>,
-        Dual_math_w_basecmp<DATA_T, CLS_T> {
-// with basic math operators and ==,!=
-public:
-    virtual ~T_mathprop();
-
-};
-
-template <class DATA_T, class CLS_T>
-class T_fullmathprop: T_prop_bc<DATA_T, CLS_T>,
-        Dual_math_w_fullcmp<DATA_T, CLS_T> {
-// with basic math operators and comparison
-public:
-    virtual ~T_fullmathprop();
-};
-
-#endif // PROP_T__
+#endif // CLAMP_T__
