@@ -24,6 +24,7 @@ protected:
 public:
     explicit RawID() {}
     explicit RawID(unsigned v) {this->rid = v;}
+    virtual ~RawID();
     const unsigned& ID(void) { return this->rid;}
 
     bool operator==(const RawID &rhs) {return this->rid == rhs.rid;}

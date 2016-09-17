@@ -24,6 +24,7 @@
 template <class ITEM_T, class CLS_T>
 class VC { // Vector container class
 protected:
+    virtual ~VC();
     std::vector<ITEM_T> items;
     void _del_item(ITEM_T item) {this._del_item_by_idx(this->indexof(item));}
     void _del_item_by_idx(const unsigned i) {
@@ -48,8 +49,8 @@ public:
     }
     bool operator==(const CLS_T &rhs) {return this->items->operator==(rhs);}
     bool operator!=(const CLS_T &rhs) {return !this->operator==(rhs);}
-    ITEM_T& operator[](size_t pos) {return this->items[pos];}
-    const ITEM_T& operator[](size_t pos) const {return this->items[pos];}
+    ITEM_T& operator[](unsigned i) {return this->items[i];}
+    const ITEM_T& operator[](unsigned i) const {return this->items[i];}
 };
 
 #endif
