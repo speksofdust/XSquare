@@ -61,6 +61,8 @@ public:
     bool is_init(void);
     bool is_running(void);
     bool is_ended(void);
+    operator const char() {return this->state;}
+    operator char() {return this->state;}
 };
 
 

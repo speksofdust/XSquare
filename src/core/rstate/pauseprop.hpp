@@ -21,7 +21,11 @@ class PauseProp {
 protected:
     bool _paused = false;
 public:
+    inline const bool get(void) const {return this->_paused;}
     inline bool get(void) {return this->_paused;}
+    inline void set(int state) {
+        if (!this->_paused == !state) this->_paused = state;
+    }
     inline void set(bool state) {
         if (this->_paused != state) this->_paused = state;
     }
