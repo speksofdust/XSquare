@@ -34,7 +34,7 @@ protected:
     void _add_item(ITEM_T &item) {this->items.push_back;}
 public:
     unsigned size(void) const {return this->items.size();}
-    long indexof(ITEM_T item) {
+    size_t indexof(ITEM_T item) {
         // returns -1 if item does not exist
         const unsigned s = this->items.size();
         for (unsigned i=0; i<s; i++)
@@ -49,8 +49,8 @@ public:
     }
     bool operator==(const CLS_T &rhs) {return this->items->operator==(rhs);}
     bool operator!=(const CLS_T &rhs) {return !this->operator==(rhs);}
-    ITEM_T& operator[](unsigned i) {return this->items[i];}
-    const ITEM_T& operator[](unsigned i) const {return this->items[i];}
+    ITEM_T& operator[](size_t i) {return this->items[i];}
+    const ITEM_T& operator[](size_t i) const {return this->items[i];}
 };
 
 #endif

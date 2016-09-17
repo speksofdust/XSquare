@@ -37,6 +37,12 @@ public:
     unsigned users(void) {
         return (this->_fakeuser) ? this->_users+1 : this->_users;
     }
+    operator const unsigned() const {
+        return (this->_fakeuser) ? this->_users+1 : this->_users;
+    }
+    operator unsigned() {
+        return (this->_fakeuser) ? this->_users+1 : this->_users;
+    }
     void operator--(void) {
         if (this->_users >= 1) this->_users--;
     }
