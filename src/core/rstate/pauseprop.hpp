@@ -36,6 +36,14 @@ public:
         this->_paused = ~this->_paused;
         return this->_paused;
     }
+    inline operator const bool() {return this->_paused;}
+    inline operator bool() {return this->_paused;}
+    inline operator const int() {return this->_paused;}
+    inline operator int() {return this->_paused;}
+    inline operator const unsigned() {return this->_paused;}
+    inline operator unsigned() {return this->_paused;}
+    inline operator const char() {return this->_paused;}
+    inline operator char() {return this->_paused;}
     inline bool operator==(bool rhs) {return this->_paused == rhs;}
     inline bool operator!=(bool rhs) {return this->_paused != rhs;}
     inline bool operator==(PauseProp &rhs) {
