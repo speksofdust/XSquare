@@ -19,9 +19,9 @@
 #define XS_CPPVER__
 
 /* check for cpp11 features */
-#if defined(__cplusplus) && ((__cplusplus >= 201103L) || (defined(_MSC_VER) && _MSC_VER >= 1800))
-#else
-#   error Requires c++11 or greater features (try compiling with -std=c++11)
+#if defined(__cplusplus) && !(__cplusplus >= 201103L) || \
+        defined(_MSC_VER) && !(_MSC_VER >= 1800)
+    #error Requires c++11 or greater features (try compiling with -std=c++11)
 #endif
 
 
