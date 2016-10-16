@@ -21,6 +21,7 @@
 #include <iostream>
 #include <vector>
 
+
 template <class ITEM_T, class CLS_T>
 class VC { // Vector container class
 protected:
@@ -33,7 +34,8 @@ protected:
     }
     void _add_item(ITEM_T &item) {this->items.push_back;}
 public:
-    unsigned size(void) const {return this->items.size();}
+    inline unsigned size(void) const {return this->items.size();}
+    inline bool is_empty(void) {return this->items.size() == 0;}
     size_t indexof(ITEM_T item) {
         // returns -1 if item does not exist
         const unsigned s = this->items.size();
@@ -53,4 +55,4 @@ public:
     const ITEM_T& operator[](size_t i) const {return this->items[i];}
 };
 
-#endif
+#endif // VC__

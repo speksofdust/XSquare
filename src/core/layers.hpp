@@ -21,43 +21,52 @@
 #include "mgr.hpp"
 
 template <class CLS_T>
-class Layer_BC: protected NamedOb<CLS_T> {
+class Layer_BC: public NamedOb<CLS_T> {
 protected:
 public:
+    virtual ~Layer_BC();
 };
-
 
 template <class LAYER_T, class CLS_T>
 class Layers_BC {
 protected:
-
 public:
+    virtual ~Layers_BC();
     virtual unsigned size(void) const;
-    int indexof(LAYER_T &item) {
+    int indexof(LAYER_T &layer) {
         // returns -1 on failure
         const unsigned s = this->size;
         if (s != 0)
             for (unsigned i=0; i<s; i++)
-                if (this->_items[i] != item) return i;
+                if (this->_items[i] != layer) return i;
         else return -1;
     }
     bool is_empty(void) {return this->size() == 0;}
     /*
-    void move_up(ITEM_T &item) {
-        if (this->size() > 0 && this->top != item)
-            unsigned i = indexof(item);
+    // layer movement -- returns 1 if layer moved otherwise 0
+    int move_up(LAYER_T &layer) {
+        if (this->size() > 0 && this->top != layer)
+            unsigned i = indexof(layer);
+        return 0;
     }
-    void move_down(ITEM_T &item) {
-        if (this->size() > 0 && this->bottom != item)
+    int move_down(LAYER_T &item) {
+        if (this->size() > 0 && this->bottom != layer)
             unsigned i = indexof(item);
+        return 0;
     }
-    void move_to_top(ITEM_T &item) {
-        if (this->size() > 0 && this->top != item)
-            unsigned i = indexof(item);
+    int move_to_top(LAYER_T &layer) {
+        if (this->size() > 0 && this->top != layer)
+            unsigned i = indexof(layer);
+        return 0;
     }
-    void move_down(ITEM_T &item) {
-        if (this->size() > 0 && this->bottom != item)
-            unsigned i = indexof(item);
+    int move_down(LAYER_T &layer) {
+        if (this->size() > 0 && this->bottom != layer)
+            unsigned i = indexof(layer);
+        return 0;
+    }
+    int move_layer(LAYER_T & layer, unsigned new_pos) {
+        if (this->indexof(layer) != new_pos && this->size() <= new_pos)
+        return 0;
     }
     */
     LAYER_T top(void) {return this->_items[this->size()];}
@@ -71,6 +80,7 @@ public:
             return true;
     }
     bool operator!=(CLS_T &rhs) {return !this->operator==(rhs);}
+
 };
 
-#endif
+#endif // LAYERS__

@@ -22,33 +22,58 @@
 #include "include/rawid.hpp"
 #include "prop.hpp"
 
+// TODOs (as needed)
+// 1 -- make Mgrs more universaly compatable with other std container types
+// 2 -- Thread safety?
 
 template <class ITEM_T, class CLS_T>
-class Mgr: protected VC<ITEM_T, CLS_T> {
+class Mgr: public VC<ITEM_T, CLS_T> {
 protected:
 public:
+    virtual ~Mgr();
+    void _add_item(ITEM_T &item) {
+        this->items.push_back(*item);
+    }
+};
+
+
+template <class ITEM_T, class CLS_T>
+class MgrWithRID: public Mgr<ITEM_T, CLS_T> {
+// Only the manager (CLS_T) uses an rid
+// - Comparisons are done using rids for speed
+protected:
+    MgrRawID rid;
+    const unsigned ID(void) const {return this->rid.ID();}
+public:
+    virtual ~MgrWithRID();
+    inline bool operator==(CLS_T& rhs) {return this->rid == rhs.rid;}
 };
 
 
 template <class ITEM_T, class CLS_T> // ITEM_T must inherit from ObWithRID
-class MgrWithRID: protected Mgr<ITEM_T, CLS_T> {
+class ObWithRID_MgrWithRID: public MgrWithRID<ITEM_T, CLS_T> {
+// Both the manager (CLS_T) and the items it manages (ITEM_T) use rids
 protected:
-    MgrRawID rid;
-    const unsigned ID(void) {return this->rid.ID();}
     void _add_item(ITEM_T &item) {
         item.rid = this->rid.new_RawID();
-        this->items.push_back;
+        this->items.push_back(*item);
     }
 public:
-
+    virtual ~ObWithRID_MgrWithRID();
+    inline bool operator==(CLS_T& rhs) {return this->rid == rhs.rid;}
 };
 
 
 template <class ITEM_T, class CLS_T>
-class MgrMgr: protected Mgr<ITEM_T, CLS_T> {
-// manager to manage managers
+class MgrMgr: public Mgr<ITEM_T, CLS_T> {
+// manager to manage 'managers'
+// the item ('manager') to be managed (ITEM_T) MUST inherit from
+//      MgrWithRID or one of its derived classes
+//      OR use utilize an rid in the same manner as MgrWithRID
+// - Comparisons are done using RIDS for speed
 protected:
 public:
+    virtual ~MgrMgr();
     const CLS_T get_mgr_by_MGRID(const unsigned id) {
         for (unsigned i=0; i<this->size; i++)
             if (this->items[i].rid == id) return this->items[i];
@@ -63,29 +88,34 @@ public:
 template <class CLS_T>
 class _Ob_BC { // Base class
 public:
+    virtual ~_Ob_BC();
     CLS_T& operator=(const CLS_T &other) { //copy
         if (this != &other) return *this;
     }
     CLS_T& operator=(CLS_T &other) { // move
         if (this != &other) return *this;
     }
-    bool operator==(const CLS_T &rhs);
-    bool operator!=(const CLS_T &rhs) {return !this->operator==(rhs);}
+    virtual bool operator==(CLS_T &rhs);
+    bool operator!=(CLS_T &rhs) {return !this->operator==(rhs);}
 
 };
 
+
 template <class CLS_T>
-class NamedOb: protected _Ob_BC<CLS_T> {
+class NamedOb: public _Ob_BC<CLS_T> {
 public:
     StrProp name;
+    virtual ~NamedOb();
 };
 
+
 template <class CLS_T>
-class ObWithRID: protected _Ob_BC<CLS_T> {
+class ObWithRID: public _Ob_BC<CLS_T> {
 protected:
     RawID rid;
     const unsigned ID(void) {return this->rid.ID();}
 public:
+    virtual ~ObWithRID();
     CLS_T& operator=(const CLS_T &other) { // copy
         if (this != &other) {// must increment rid
             CLS_T x = *this;
@@ -96,10 +126,12 @@ public:
     bool operator==(const CLS_T &rhs) {return this->rid == rhs.rid;}
 };
 
+
 template <class CLS_T>
-class NamedObWithRID: protected ObWithRID<CLS_T> {
+class NamedObWithRID: public ObWithRID<CLS_T> {
 public:
     StrProp name;
+    virtual ~NamedObWithRID();
 };
 
 
