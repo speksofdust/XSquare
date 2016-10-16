@@ -15,51 +15,75 @@
 * ------------------------------------------------------------------------- */
 
 
-#ifndef EVENT__
-#define EVENT__
+#ifndef XSAPP__
+#define XSAPP__
 
-#include "core/mgr.hpp"
+#include "core/rstate/rstate_bc.hpp"
 
 
-class Event;
+class App; // forward declaration so we can keep _set_state protected
 
-class EventMgr: protected MgrWithRID<Event, EventMgr> {
+
+class AppState: public RState {
 protected:
-    void _add_item(Event &evt);
+    char state;
+    bool paused = false;
+    unsigned locked = 0;
+    void _set_state(const char state) {this->state = state;}
 public:
-    friend class Event;
-    EventMgr() {}
-    ~EventMgr() {}
-    Event new_evt(void);
-    void cleanup(void);
-    inline bool operator==(EventMgr& rhs) {
-        return this->rid == rhs.rid;}
+    friend class App;
+    AppState() {}
+    ~AppState() {}
 };
 
 
-class Event: public NamedOb<Event> {
-// Note: only mgr class uses rawids
+class AppEvent {
 protected:
-    EventMgr _mgr;
+    char etid;
     bool handled = false;
 public:
-    Event(EventMgr& mgr) {
-        mgr._add_item(*this);
+    friend class AppState;
+    AppEvent() {}
+    AppEvent(const char& etid) {
+        this->etid = etid;
     }
-    ~Event() {}
-    unsigned handle(void) {
+    ~AppEvent() {}
+    const char ETID(void) {return this->etid;}
+    const char eventtype_id(void) {return this->etid;} // alias for ETID
+    void handle(void) {
         if (!this->handled) this->handled = true;
-        return 1;
     }
     bool is_handled(void) {return this->handled;}
-    inline bool operator==(Event& rhs) {
-        return (this->_mgr == rhs._mgr &&
-                this->handled == rhs.handled &&
-                this->name == rhs.name);
-    }
 };
 
 
-static MgrMgr<Event, EventMgr> eventmanagers = MgrMgr<Event, EventMgr>();
+class AppEvents {
+public:
+    AppEvent evt;
+    AppEvents() {}
+    ~AppEvents() {}
+};
 
-#endif
+
+class App {
+protected:
+    AppState rs;
+    void _spawn_evt();
+    void _set_state(const char s) {this->rs._set_state(s);}
+public:
+    AppEvents events;
+    const AppState runstate(void) const {return this->rs;}
+    char get_runstate(void) {return this->rs.get_state();}
+    const char* runstate_name(void) {
+        return get_rsname(this->rs.get_state());
+    }
+    void start(void);
+    void app_init(void);
+    void end(void);
+};
+
+
+App app = App();
+
+
+#endif // XSAPP__

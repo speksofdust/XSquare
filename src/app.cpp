@@ -14,52 +14,21 @@
  *   not, see http://www.gnu.org/licenses/.                                 *
 * ------------------------------------------------------------------------- */
 
+#include "app.hpp"
+#include "core/rstate/rstate_bc.hpp"
 
-#ifndef EVENT__
-#define EVENT__
+using namespace RUNSTATES;
 
-#include "core/mgr.hpp"
-
-
-class Event;
-
-class EventMgr: protected MgrWithRID<Event, EventMgr> {
-protected:
-    void _add_item(Event &evt);
-public:
-    friend class Event;
-    EventMgr() {}
-    ~EventMgr() {}
-    Event new_evt(void);
-    void cleanup(void);
-    inline bool operator==(EventMgr& rhs) {
-        return this->rid == rhs.rid;}
-};
-
-
-class Event: public NamedOb<Event> {
-// Note: only mgr class uses rawids
-protected:
-    EventMgr _mgr;
-    bool handled = false;
-public:
-    Event(EventMgr& mgr) {
-        mgr._add_item(*this);
-    }
-    ~Event() {}
-    unsigned handle(void) {
-        if (!this->handled) this->handled = true;
-        return 1;
-    }
-    bool is_handled(void) {return this->handled;}
-    inline bool operator==(Event& rhs) {
-        return (this->_mgr == rhs._mgr &&
-                this->handled == rhs.handled &&
-                this->name == rhs.name);
-    }
-};
-
-
-static MgrMgr<Event, EventMgr> eventmanagers = MgrMgr<Event, EventMgr>();
-
-#endif
+void App::start(void) {
+    if (!(this->rs > ENDED))
+        this->_set_state(INIT);
+        this->app_init();
+}
+void App::app_init(void) {
+    if (this->rs == NOT_STARTED)
+        this->_set_state(INIT);
+}
+void App::end(void) {
+    if (this->rs == RUNNING)
+        this->_set_state(ENDED);
+}

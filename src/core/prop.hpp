@@ -25,6 +25,15 @@
 
 class BoolProp: T_basecmp_dataprop<bool, BoolProp>{ // bool property
 public:
+    inline operator const int() {return (this->data)? 1 : 0;}
+    inline operator int() {return (this->data)? 1 : 0;}
+    inline operator const unsigned() {return (this->data)? 1 : 0;}
+    inline operator unsigned() {return (this->data)? 1 : 0;}
+    inline operator const char() {return (this->data)? 1 : 0;}
+    inline operator char() {return (this->data)? 1 : 0;}
+    inline operator const bool() {return this->data;}
+    inline operator bool() {return this->data;}
+    void set(bool v) {this->data = v;}
     void toggle(void) { // invert current state
         this->data = ~this->data;
     }
@@ -44,7 +53,9 @@ class CharArrProp: T_basecmp<char*> { // char array property
 protected:
     char* _ca;
 public:
-    char* get(void) { return this->_ca; }
+    operator const char*() const {return this->_ca;}
+    operator char*() {return this->_ca;}
+    char* get(void) {return this->_ca;}
     void set(char* t) { if (this->_ca != t) this->_ca = t;}
     bool operator==(CharArrProp &rhs) { return this->_ca == rhs._ca; }
     bool operator!=(CharArrProp &rhs) {return !this->operator==(rhs);}
@@ -58,14 +69,29 @@ public:
 class StrProp: T_basecmp_dataprop<std::string, StrProp> {
 public:
     unsigned size(void) const {return this->data.size();}
-    bool operator==(StrProp &rhs) {
-        const unsigned s = this->size();
+    void set(std::string v) {this->data = v;}
+    operator const char*() const {
+        const char* c = this->data.c_str();
+        return c;
+    }
+    operator std::string() {return this->data;}
+    inline bool operator==(StrProp &rhs) {
+        const size_t s = this->size();
         if (!rhs.size() == s) return false;
         else
             for (size_t i=0; i<s; i++)
                 if (!this->data[i] == rhs.data[i]) return false;
         return true;
     }
+    inline bool operator==(std::string &rhs) {
+        const size_t s = this->size();
+        if (!rhs.size() == s) return false;
+        else
+            for (size_t i=0; i<s; i++)
+                if (!this->data[i] == rhs[i]) return false;
+        return true;
+    }
+    inline bool operator!=(std::string &rhs) {return !this->operator==(rhs);}
     char& operator[](size_t pos) {return this->data[pos];}
     const char& operator[](size_t pos) const {return this->data[pos];}
 };

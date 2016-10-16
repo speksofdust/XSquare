@@ -15,51 +15,14 @@
 * ------------------------------------------------------------------------- */
 
 
-#ifndef EVENT__
-#define EVENT__
+#ifndef XS_SIMDCHK__
+#define XS_SIMDCHK__
 
-#include "core/mgr.hpp"
-
-
-class Event;
-
-class EventMgr: protected MgrWithRID<Event, EventMgr> {
-protected:
-    void _add_item(Event &evt);
-public:
-    friend class Event;
-    EventMgr() {}
-    ~EventMgr() {}
-    Event new_evt(void);
-    void cleanup(void);
-    inline bool operator==(EventMgr& rhs) {
-        return this->rid == rhs.rid;}
-};
-
-
-class Event: public NamedOb<Event> {
-// Note: only mgr class uses rawids
-protected:
-    EventMgr _mgr;
-    bool handled = false;
-public:
-    Event(EventMgr& mgr) {
-        mgr._add_item(*this);
-    }
-    ~Event() {}
-    unsigned handle(void) {
-        if (!this->handled) this->handled = true;
-        return 1;
-    }
-    bool is_handled(void) {return this->handled;}
-    inline bool operator==(Event& rhs) {
-        return (this->_mgr == rhs._mgr &&
-                this->handled == rhs.handled &&
-                this->name == rhs.name);
-    }
-};
-
-
-static MgrMgr<Event, EventMgr> eventmanagers = MgrMgr<Event, EventMgr>();
+//#define HAS_SSE3__
+//#define HAS_SSSE3__
+//#define HAS_SSE4__
+//#define HAS_SSE4_1__
+//#define HAS_SSE4_2__
+//#define HAS_AVX512__
 
 #endif
