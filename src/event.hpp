@@ -48,8 +48,10 @@ public:
     }
     ~Event() {}
     unsigned handle(void) {
-        if (!this->handled) this->handled = true;
-        return 1;
+        if (!this->handled)
+            this->handled = true;
+            return 1;
+        return 0;
     }
     bool is_handled(void) {return this->handled;}
     inline bool operator==(Event& rhs) {

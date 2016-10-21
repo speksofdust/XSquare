@@ -16,7 +16,7 @@
 
 
 #include <string>
-#include "mixin/base_T.hpp"
+//#include "mixin/base_T.hpp"
 #include "mixin/dataprop_T.hpp"
 
 #ifndef PROP__
@@ -46,6 +46,8 @@ public:
             this->toggle();}
         return *this;
     }*/
+    inline bool operator==(const BoolProp& rhs) {return this->data == rhs.data;}
+    inline bool operator!=(const BoolProp& rhs) {return !this->operator==(rhs);}
 };
 
 
@@ -75,6 +77,10 @@ public:
         return c;
     }
     operator std::string() {return this->data;}
+    operator const char*() {
+        const char *x = this->data.c_str();
+        return x;
+    }
     inline bool operator==(StrProp &rhs) {
         const size_t s = this->size();
         if (!rhs.size() == s) return false;
@@ -83,6 +89,7 @@ public:
                 if (!this->data[i] == rhs.data[i]) return false;
         return true;
     }
+    inline bool operator!=(StrProp &rhs) {return !this->operator==(rhs);}
     inline bool operator==(std::string &rhs) {
         const size_t s = this->size();
         if (!rhs.size() == s) return false;

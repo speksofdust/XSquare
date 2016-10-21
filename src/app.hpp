@@ -48,12 +48,18 @@ public:
         this->etid = etid;
     }
     ~AppEvent() {}
-    const char ETID(void) {return this->etid;}
-    const char eventtype_id(void) {return this->etid;} // alias for ETID
+    inline const char ETID(void) {return this->etid;}
+    inline const char eventtype_id(void) {return this->etid;} // alias for ETID
     void handle(void) {
         if (!this->handled) this->handled = true;
     }
-    bool is_handled(void) {return this->handled;}
+    inline bool is_handled(void) {return this->handled;}
+    inline bool operator==(const AppEvent &rhs) {
+        return this->etid == rhs.etid;
+    }
+    inline bool operator!=(const AppEvent &rhs) {
+        return !this->operator==(rhs);
+    }
 };
 
 
@@ -73,7 +79,7 @@ protected:
 public:
     AppEvents events;
     const AppState runstate(void) const {return this->rs;}
-    char get_runstate(void) {return this->rs.get_state();}
+    inline char get_runstate(void) {return this->rs.get_state();}
     const char* runstate_name(void) {
         return get_rsname(this->rs.get_state());
     }
