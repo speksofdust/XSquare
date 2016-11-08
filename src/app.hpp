@@ -22,6 +22,7 @@
 
 
 class App; // forward declaration so we can keep _set_state protected
+class Console;
 
 
 class AppState: public RState {
@@ -76,7 +77,11 @@ protected:
     AppState rs;
     void _spawn_evt();
     void _set_state(const char s) {this->rs._set_state(s);}
+    //Console &console;
 public:
+    App() {
+        //this->console = Console;
+        };
     AppEvents events;
     const AppState runstate(void) const {return this->rs;}
     inline char get_runstate(void) {return this->rs.get_state();}
