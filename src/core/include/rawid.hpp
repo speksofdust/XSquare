@@ -25,7 +25,7 @@ public:
     explicit RawID() {}
     explicit RawID(unsigned v) {this->rid = v;}
     virtual ~RawID();
-    const unsigned& ID(void) { return this->rid;}
+    const unsigned &ID(void) {return this->rid;}
     operator const unsigned() {return this->rid;}
     operator unsigned() {return this->rid;}
     bool operator==(const RawID &rhs) {return this->rid == rhs.rid;}
@@ -48,7 +48,7 @@ public:
 };
 
 
-class MgrRawID: protected RawID {
+class MgrRawID: public RawID {
 protected:
     unsigned _last = 0;
     bool _locked = false;
