@@ -17,11 +17,14 @@
 #ifndef STATEOPS_T__
 #define STATEOPS_T__
 
-template <typename NUM_T, class T>
+
+template <typename NUM, class T>
 class _T_state_ops {
-// Basic state machine comparison operators;
+    /* Basic state machine comparison operators;
+     * Note NUM must be a form of int eg. unsigned, long, etc.
+     */
 protected:
-    NUM_T state = 0;
+    NUM state = 0;
     void _set_state(const char state) {this->state = state;}
 public:
     virtual ~_T_state_ops();
@@ -33,21 +36,25 @@ public:
     inline operator unsigned() {return this->state;}
     inline operator const char() {return this->state;}
     inline operator char(){return this->state;}
+
+    // cmp using T
     inline bool operator==(T &rhs) {return this->state == rhs.state;}
     inline bool operator!=(T &rhs) {return !this->operator==(rhs);}
     inline bool operator<(T &rhs) {return this->state < rhs.state;}
     inline bool operator>(T &rhs) {return this->state > rhs.state;}
     inline bool operator<=(T &rhs) {return this->state <= rhs.state;}
     inline bool operator>=(T &rhs) {return this->state >= rhs.state;}
+    inline bool operator^(T &rhs) {return this->state ^ rhs.state;}
 
-    inline bool operator==(NUM_T rhs) {return this->state == rhs;}
-    inline bool operator!=(NUM_T rhs) {return !this->operator==(rhs);}
-    inline bool operator<(NUM_T rhs) {return this->state < rhs;}
-    inline bool operator>(NUM_T rhs) {return this->state > rhs;}
-    inline bool operator<=(NUM_T rhs) {return this->state <= rhs;}
-    inline bool operator>=(NUM_T rhs) {return this->state >= rhs;}
-
-    inline bool operator^(NUM_T rhs) {return this->state ^ rhs;}
+    // cmp using NUM
+    inline bool operator==(NUM rhs) {return this->state == rhs;}
+    inline bool operator!=(NUM rhs) {return !this->operator==(rhs);}
+    inline bool operator<(NUM rhs) {return this->state < rhs;}
+    inline bool operator>(NUM rhs) {return this->state > rhs;}
+    inline bool operator<=(NUM rhs) {return this->state <= rhs;}
+    inline bool operator>=(NUM rhs) {return this->state >= rhs;}
+    inline bool operator^(NUM rhs) {return this->state ^ rhs;}
 };
+
 
 #endif // STATEOPS_T__

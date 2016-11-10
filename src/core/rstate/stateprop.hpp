@@ -20,20 +20,33 @@
 
 #include "stateops_T.hpp"
 
-template <typename NUM_T, class T>
-class state_switch_T: public _T_state_ops<NUM_T, T> {
+
+template <typename NUM, class T>
+class state_switch_T: public _T_state_ops<NUM, T> {
+    /* Basic state machine switch
+     * Note NUM must be a form of int eg. unsigned, long, etc.
+     */
 protected:
-    NUM_T min, max;
+    NUM min, max;
 public:
     virtual ~state_switch_T();
-    const NUM_T get(void) const {return this->state;}
-    NUM_T get(void) {return this->state;}
-    int set(const NUM_T state) {
-        if (state == this->state) return 0;
-        else if (state <= min) this->state = this->min;
+    const NUM get(void) const {return this->state;}
+    NUM get(void) {return this->state;}
+    inline int set(const NUM state) {
+        // returns 1 if changed, -1  out of bounds, 0 if no change
+        if (this->state == state) return 0; // no change
+        else if (this->min <= state || state <= this->max)
+            this->state = state;
+            return 1; // changed
+        return -1; // out of bounds -- no change
+    }
+    inline int set_clamped(const NUM state) {
+        // returns 1 if changed, otherwise 0
+        if (state == this->state) return 0; // no change
+        else if (state <= this->min) this->state = this->min;
         else if (state >= this->max) this->state = this->max;
         else this->state = state;
-        return 1;
+        return 1; // changed
     }
     inline void operator++(void) {
         if (this->state < this->max) this->state++;
@@ -43,28 +56,49 @@ public:
     }
 };
 
-template <typename NUM_T, class T>
-class looping_state_switch_T: public _T_state_ops<NUM_T, T> {
+
+template <typename NUM, class T>
+class looping_state_switch_T: public state_switch_T<NUM, T> {
+    /*
+     * Note NUM must be a form of int eg. unsigned, long, etc.
+     */
 protected:
-    NUM_T max;
+    NUM min, max;
 public:
     virtual ~looping_state_switch_T();
-    const unsigned get(void) const {return this->state;}
-    NUM_T get(void) {return this->state;}
-    int set(const NUM_T state) {
-        if (state == this->state) return 0;
-        else if (state >= this->max) this->state = this->max;
-        else if (state <= 0) this->state = 0;
-        return 1;
-    }
     inline void operator++(void) {
-        if (this->state == this->max) this->state = 0;
-        else this->state++;
+        (this->state == this->max) ? this->state = this->min : this->state++;
     }
     inline void operator--(void) {
-        if (this->state == 0) this->state = this->max;
-        else this->state--;
+        (this->state == this->min) ? this->state = this->max : this->state--;
     }
 };
+
+
+template <typename NUM>
+class _state_switch_with_default_mixin {
+    // Mixin class to add a default state to state_switch classes
+protected:
+    NUM _default_state;
+public:
+    inline NUM &default_state(void) {return this->_default_state;}
+    inline bool is_default(void) {return this->_default_state == this->state;}
+    inline void clear(void) {this->state = this->_default_state;}
+};
+
+
+// Supplimentary Classes with default
+template <typename NUM, class T>
+class state_switch_with_default_T:
+        public _state_switch_with_default_mixin<NUM> {
+};
+
+
+template <typename NUM, class T>
+class looping_state_switch_with_default_T:
+    public _state_switch_with_default_mixin<NUM> {
+};
+
+
 
 #endif // STATEPROPS__
