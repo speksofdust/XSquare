@@ -28,8 +28,19 @@ void clamp(const NUM v, const NUM min, const NUM max) {
 }
 
 template <typename NUM>
+NUM clamped_hi(const NUM v, const NUM max) {return (v >= max) ? max : v;}
+
+template <typename NUM>
+NUM clamped_lo(const NUM v, const NUM min) {return (v <= min) ? min : v;}
+
+template <typename NUM>
+bool outside_range(const NUM v, const NUM min, const NUM max) {
+    return v < min || v > max;
+}
+
+template <typename NUM>
 bool in_range(const NUM v, const NUM min, const NUM max) {
-    return min < v && v < max;
+    return min <= v && v <= max;
 }
 
 #endif
