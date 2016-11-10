@@ -17,15 +17,19 @@
 #ifndef CLAMPMATH__
 #define CLAMPMATH__
 
-template <typename NUM_T>
-NUM_T clamped(NUM_T v, NUM_T min, NUM_T max) {
+template <typename NUM>
+NUM clamped(const NUM v, const NUM min, const NUM max) {
     if (v <= min) return min;
     else return (v >= max) ? max : v;
 }
-template <typename NUM_T>
-void clamp(NUM_T v, NUM_T min, NUM_T max) {v = clamped(v, min, max);}
+template <typename NUM>
+void clamp(const NUM v, const NUM min, const NUM max) {
+    v = clamped(v, min, max);
+}
 
-template <typename NUM_T>
-bool in_range(NUM_T v, NUM_T min, NUM_T max) {return min < v && v < max;}
+template <typename NUM>
+bool in_range(const NUM v, const NUM min, const NUM max) {
+    return min < v && v < max;
+}
 
 #endif
