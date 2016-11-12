@@ -19,6 +19,7 @@
 #define STATEPROPS__
 
 #include "stateops_T.hpp"
+#include "../clamp.hpp"
 
 
 template <typename NUM, class T>
@@ -43,9 +44,7 @@ public:
     inline int set_clamped(const NUM state) {
         // returns 1 if changed, otherwise 0
         if (state == this->state) return 0; // no change
-        else if (state <= this->min) this->state = this->min;
-        else if (state >= this->max) this->state = this->max;
-        else this->state = state;
+        else this->state = clamped(state, this->min, this->max);
         return 1; // changed
     }
     inline void operator++(void) {
