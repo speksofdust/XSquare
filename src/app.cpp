@@ -22,6 +22,7 @@ using namespace RUNSTATES;
 void App::start(void) {
     if (!(this->rs > ENDED))
         this->_set_state(INIT);
+        // this->profile.timing.start();
         this->app_init();
 }
 void App::app_init(void) {
@@ -31,4 +32,5 @@ void App::app_init(void) {
 void App::end(void) {
     if (this->rs == RUNNING)
         this->_set_state(ENDED);
+    // this->profile.timing.end();
 }

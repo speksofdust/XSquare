@@ -19,10 +19,7 @@
 #define XSAPP__
 
 #include "core/rstate/rstate_bc.hpp"
-
-
-class App; // forward declaration so we can keep _set_state protected
-class Console;
+#include "console.hpp"
 
 
 class AppState: public RState {
@@ -77,11 +74,14 @@ protected:
     AppState rs;
     void _spawn_evt();
     void _set_state(const char s) {this->rs._set_state(s);}
-    //Console &console;
+    Console console;
+    // TODO add profiling stuff
 public:
     App() {
-        //this->console = Console;
-        };
+        Console *c = new Console();
+        this->console = *c;
+        delete c;
+    }
     AppEvents events;
     const AppState runstate(void) const {return this->rs;}
     inline char get_runstate(void) {return this->rs.get_state();}
