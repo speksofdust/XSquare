@@ -17,13 +17,62 @@
 
 #include <string>
 //#include "mixin/base_T.hpp"
-#include "mixin/dataprop_T.hpp"
+//#include "mixin/dataprop_T.hpp"
 
 #ifndef PROP__
 #define PROP__
 
+template <class DATA, class T>
+class T_DataPropBase {
+protected:
+    DATA data;
+public:
+    virtual ~T_DataPropBase();
+    virtual DATA get(void);
+    inline const DATA get(void) const {return this->data;}
+    virtual void set(DATA value);
+    &operator const DATA(void) {return this->data;}
+    inline bool operator==(const T &rhs) {return this->data == rhs.data;}
+    inline bool operator!=(const T &rhs) {return !this->operator==(rhs);}
+};
 
-class BoolProp: T_basecmp_dataprop<bool, BoolProp>{ // bool property
+
+template <class DATA, class T>
+class T_DataPropBase_WithLTGT: public T_DataPropBase<DATA, T> {
+public:
+    inline bool operator>(T rhs) {return this->data > rhs;}
+    inline bool operator<(T rhs) {return this->data < rhs;}
+    inline bool operator>=(T rhs) {return !this->operator>(rhs);}
+    inline bool operator<=(T rhs) {return !this->operator<(rhs);}
+};
+
+
+template <class DATA, class T>
+class T_DataPropBase_WithMath: public T_DataPropBase<DATA, T> {
+    virtual inline T operator+=(T other);
+    virtual inline T operator-=(T other);
+    virtual inline T operator/=(T other);
+    virtual inline T operator*=(T other);
+    inline const T operator+(T other) {
+        T v = this;
+        return v += other;
+    }
+    inline const T operator-(T other) {
+        T v = this;
+        return v -= other;
+    }
+    inline const T operator/(T other) {
+        T v = this;
+        return v /= other;
+    }
+    inline const T operator*(T other) {
+        T v = this;
+        return v *= other;
+    }
+};
+
+
+class BoolProp: public T_DataPropBase<bool, BoolProp>{ // bool property
 public:
     inline operator const int() {return (this->data)? 1 : 0;}
     inline operator int() {return (this->data)? 1 : 0;}
@@ -46,29 +95,12 @@ public:
             this->toggle();}
         return *this;
     }*/
-    inline bool operator==(const BoolProp& rhs) {return this->data == rhs.data;}
-    inline bool operator!=(const BoolProp& rhs) {return !this->operator==(rhs);}
+    inline bool operator==(const BoolProp &rhs) {return this->data == rhs.data;}
+    inline bool operator!=(const BoolProp &rhs) {return !this->operator==(rhs);}
 };
 
 
-class CharArrProp: T_basecmp<char*> { // char array property
-protected:
-    char* _ca;
-public:
-    operator const char*() const {return this->_ca;}
-    operator char*() {return this->_ca;}
-    char* get(void) {return this->_ca;}
-    void set(char* t) { if (this->_ca != t) this->_ca = t;}
-    bool operator==(CharArrProp &rhs) { return this->_ca == rhs._ca; }
-    bool operator!=(CharArrProp &rhs) {return !this->operator==(rhs);}
-    bool operator==(char* rhs) {return this->_ca == rhs;}
-
-    //char& operator[](size_t pos) {return this->_ca[pos];}
-    //const char& operator[](size_t pos) const {return this->_ca[pos];}
-};
-
-
-class StrProp: T_basecmp_dataprop<std::string, StrProp> {
+class StrProp: public T_DataPropBase<std::string, StrProp> {
 public:
     unsigned size(void) const {return this->data.size();}
     void set(std::string v) {this->data = v;}
