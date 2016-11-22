@@ -19,6 +19,8 @@
 
 #include "../coremath/pi_const.hpp"
 
+namespace XS_CORE {
+
 template <class CLS_T>
 class T_cvt_deg_rads {
 public:
@@ -74,8 +76,9 @@ public:
 
 
 template <typename NUM_T, class CLS_T>
-class T_angle_and_cvt_deg_rads: T_anglefuncs<NUM_T, CLS_T>,
+class T_angle_and_cvt_deg_rads: public T_anglefuncs<NUM_T, CLS_T>,
         T_cvt_deg_rads<CLS_T> {
 };
 
-#endif
+} // XS_CORE
+#endif // ANGLEFUNCS_T__
