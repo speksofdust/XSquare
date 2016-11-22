@@ -15,12 +15,13 @@
 * ------------------------------------------------------------------------- */
 
 
-#ifndef REFCOUNT__
-#define REFCOUNT__
+#ifndef XS_CORE_REFCOUNT__
+#define XS_CORE_REFCOUNT__
 
 //#include <mutex>
 //#include <memory>
 
+namespace XS_CORE {
 
 class RefCount {
 protected:
@@ -66,4 +67,5 @@ public:
     }
 };
 
-#endif
+} // XS_CORE
+#endif // XS_CORE_REFCOUNT__

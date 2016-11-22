@@ -15,12 +15,13 @@
 * ------------------------------------------------------------------------- */
 
 
-#ifndef VC__
-#define VC__
+#ifndef XS_CORE_VC__
+#define XS_CORE_VC__
 
 #include <iostream>
 #include <vector>
 
+namespace XS_CORE {
 
 template <class ITEM_T, class CLS_T>
 class VC { // Vector container class
@@ -55,4 +56,5 @@ public:
     const ITEM_T& operator[](size_t i) const {return this->items[i];}
 };
 
-#endif // VC__
+} // XS_CORE
+#endif // XS_CORE_VC__

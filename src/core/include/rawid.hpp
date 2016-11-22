@@ -15,8 +15,10 @@
 * ------------------------------------------------------------------------- */
 
 
-#ifndef RAWID__
-#define RAWID__
+#ifndef XS_CORE_RAWID__
+#define XS_CORE_RAWID__
+
+namespace XS_CORE {
 
 class RawID {
 protected:
@@ -75,4 +77,5 @@ public:
     }
 };
 
-#endif
+} // XS_CORE
+#endif // XS_CORE_RAWID__
