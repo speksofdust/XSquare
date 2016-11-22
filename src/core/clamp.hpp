@@ -17,14 +17,16 @@
 #ifndef CLAMPMATH__
 #define CLAMPMATH__
 
+namespace XS_CORE {
+
 template <typename NUM>
 NUM clamped(const NUM v, const NUM min, const NUM max) {
-    if (v <= min) return min;
-    else return (v >= max) ? max : v;
+    return (v <= min) ? min : (v >= max) ? max : v;
 }
+
 template <typename NUM>
 void clamp(const NUM v, const NUM min, const NUM max) {
-    v = clamped(v, min, max);
+    v = (v <= min) ? min : (v >= max) ? max : v;
 }
 
 template <typename NUM>
@@ -43,4 +45,5 @@ bool in_range(const NUM v, const NUM min, const NUM max) {
     return min <= v && v <= max;
 }
 
-#endif
+} // XS_CORE
+#endif // CLAMPMATH__
