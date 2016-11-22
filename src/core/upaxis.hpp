@@ -14,7 +14,6 @@
  *   not, see http://www.gnu.org/licenses/.                                 *
 * ------------------------------------------------------------------------- */
 
-
 #ifndef UPAXIS__
 #define UPAXIS__
 
@@ -36,6 +35,9 @@ public:
         UpAxis x = *this;
         x.invert();
         return x;
+    }
+    void set_axis(unsigned axis) {
+        if (axis >= 0 || axis <= 2) this->_axis = axis;
     }
     void invert(void) {
         this->_invert = (this-_invert) ? false : true;
