@@ -18,6 +18,7 @@
 #ifndef UPAXIS__
 #define UPAXIS__
 
+namespace XS_CORE {
 
 class UpAxis {
     bool _invert = false;
@@ -68,5 +69,5 @@ public:
     }
 };
 
-
+} // XS_CORE
 #endif //UPAXIS__

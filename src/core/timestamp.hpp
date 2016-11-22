@@ -22,6 +22,8 @@
 #include <ctime>
 #include <iostream>
 
+namespace XS_CORE {
+
 const char XS_TIME_FMT[20] = "%Y %d %h %D:%M:%S%p";
 
 class TimeStamp {
@@ -55,4 +57,5 @@ public:
     //time_t difference(void);
 };
 
+} // XS_CORE
 #endif // TIMESTAMP__

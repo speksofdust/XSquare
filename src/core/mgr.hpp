@@ -22,6 +22,8 @@
 #include "include/rawid.hpp"
 #include "prop.hpp"
 
+namespace XS_CORE {
+
 // TODOs (as needed)
 // 1 -- make Mgrs more universaly compatable with other std container types
 // 2 -- Thread safety?
@@ -139,5 +141,5 @@ public:
     }
 };
 
-
+} // XS_CORE
 #endif
