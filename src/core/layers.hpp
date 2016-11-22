@@ -15,25 +15,35 @@
 * ------------------------------------------------------------------------- */
 
 
-#ifndef LAYERS__
-#define LAYERS__
+#ifndef XS_CORE_LAYERS__
+#define XS_CORE_LAYERS__
 
 #include "mgr.hpp"
 
-template <class CLS_T>
-class Layer_BC: public NamedOb<CLS_T> {
+namespace XS_CORE {
+
+
+template <class Layers_T, class T>
+class Layer_BC: public NamedOb<T> {
 protected:
+    Layers_T owner;
 public:
     virtual ~Layer_BC();
+    unsigned indexof(void) {
+        return this->owner.indexof(this);
+    }
+    bool is_top(void) {return this == this->owner.top();}
+    bool is_bottom(void) {return this == this->owner.bottom();}
 };
 
-template <class LAYER_T, class CLS_T>
+
+template <class LAYER_T, class T>
 class Layers_BC {
 protected:
 public:
     virtual ~Layers_BC();
     virtual unsigned size(void) const;
-    int indexof(LAYER_T &layer) {
+    unsigned indexof(LAYER_T &layer) {
         // returns -1 on failure
         const unsigned s = this->size;
         if (s != 0)
@@ -71,7 +81,7 @@ public:
     */
     LAYER_T top(void) {return this->_items[this->size()];}
     LAYER_T bottom(void) {return this->_items[0];}
-    bool operator==(CLS_T &rhs) {
+    bool operator==(T &rhs) {
         const unsigned s = this->size();
         if (s != rhs.size()) return false;
         else
@@ -79,8 +89,9 @@ public:
                 if (this->_items[i] != rhs._items[i]) return false;
             return true;
     }
-    bool operator!=(CLS_T &rhs) {return !this->operator==(rhs);}
-
+    bool operator!=(T &rhs) {return !this->operator==(rhs);}
 };
 
-#endif // LAYERS__
+
+} // XS_CORE
+#endif // XS_CORE_LAYERS__
