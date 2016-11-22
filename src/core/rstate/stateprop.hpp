@@ -21,6 +21,7 @@
 #include "stateops_T.hpp"
 #include "../clamp.hpp"
 
+namespace XS_CORE {
 
 template <typename NUM, class T>
 class state_switch_T: public _T_state_ops<NUM, T> {
@@ -99,5 +100,5 @@ class looping_state_switch_with_default_T:
 };
 
 
-
+} // XS_CORE
 #endif // STATEPROPS__

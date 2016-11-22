@@ -17,6 +17,8 @@
 #ifndef PAUSEPROP__
 #define PAUSEPROP__
 
+namespace XS_CORE {
+
 class PauseProp {
 protected:
     bool _paused = false;
@@ -62,5 +64,5 @@ public:
     }
 };
 
-
+} // XS_CORE
 #endif // PAUSEPROP_

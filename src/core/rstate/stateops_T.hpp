@@ -17,6 +17,7 @@
 #ifndef STATEOPS_T__
 #define STATEOPS_T__
 
+namespace XS_CORE {
 
 template <typename NUM, class T>
 class _T_state_ops {
@@ -56,5 +57,5 @@ public:
     inline bool operator^(NUM rhs) {return this->state ^ rhs;}
 };
 
-
+} // XS_CORE
 #endif // STATEOPS_T__

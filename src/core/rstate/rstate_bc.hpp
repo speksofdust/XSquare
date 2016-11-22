@@ -19,6 +19,7 @@
 
 #include "stateops_T.hpp"
 
+namespace XS_CORE {
 
 namespace RUNSTATES {
     const char INVALID = -99;
@@ -65,5 +66,5 @@ public:
     operator char() {return this->state;}
 };
 
-
+} // XS_CORE
 #endif //RSCONST__

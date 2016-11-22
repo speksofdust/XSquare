@@ -15,9 +15,12 @@
 * ------------------------------------------------------------------------- */
 
 #include "rstate_bc.hpp"
+namespace XS_CORE {
 
 using namespace RUNSTATES;
 
 bool RState::is_init(void) {return this->state == INIT;}
 bool RState::is_running(void) {return this->state == RUNNING;}
 bool RState::is_ended(void) {return this->state == ENDED;}
+
+} // XS_CORE
