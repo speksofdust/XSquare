@@ -16,8 +16,8 @@
 
 // utility functions for packing/filling values into 2d, 3d, and 4d arrays
 
-#ifndef UTILS_PACKFILL__
-#define UTILS_PACKFILL__
+#ifndef XS_CORE_UTILS_PACKFILL__
+#define XS_CORE_UTILS_PACKFILL__
 
 namespace XS_CORE {
 
@@ -76,4 +76,4 @@ const NUM* filled_4(const NUM v) {
 
 
 } // XS_CORE
-#endif // UTILS_PACKFILL__
+#endif // XS_CORE_UTILS_PACKFILL__

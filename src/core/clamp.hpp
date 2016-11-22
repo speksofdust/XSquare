@@ -14,6 +14,7 @@
  *   not, see http://www.gnu.org/licenses/.                                 *
 * ------------------------------------------------------------------------- */
 
+
 #ifndef CLAMPMATH__
 #define CLAMPMATH__
 

@@ -15,8 +15,8 @@
 * ------------------------------------------------------------------------- */
 
 
-#ifndef MGR__
-#define MGR__
+#ifndef XS_CORE_MGR__
+#define XS_CORE_MGR__
 
 #include "include/vc.hpp"
 #include "include/rawid.hpp"
@@ -142,4 +142,4 @@ public:
 };
 
 } // XS_CORE
-#endif
+#endif // XS_CORE_MGR__
